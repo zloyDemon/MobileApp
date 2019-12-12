@@ -32,7 +32,7 @@ public class RequestManager : MonoBehaviour
             public string slip_id;
         }
     }
-    
+
     public static RequestManager Instance { get; private set; }
 
     private void Awake()
@@ -90,6 +90,7 @@ public class RequestManager : MonoBehaviour
             status = ResponseStatus.Error;
         }
 
+        corCurrentRequest = null;
         onComplete?.Invoke(status, advice);
         request.Dispose();
     }

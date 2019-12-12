@@ -2,35 +2,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Data;
 using Newtonsoft;
 using Newtonsoft.Json;
 
 public class MainActivity : MonoBehaviour
 {
-    [SerializeField] private Button randomButton;
-    [SerializeField] private Button favoritesAdvices;
+    [SerializeField] Button randomButton;
+    [SerializeField] Button favoritesAdvices;
+    [SerializeField] AdviceFragment AdviceFragment;
+    [SerializeField] FavouritesFragment FavouritesFragment;
+
+    private BaseFragment currentFragment;
+    private Fragment currentFragmentType;
+
+    public enum Fragment
+    {
+        None,
+        Advice,
+        Favourites,
+    }
 
     private void Awake()
     {
         randomButton.onClick.AddListener(RandomButtonClick);
-        
+        favoritesAdvices.onClick.AddListener(FavoritesAdvicesClick);
+        ChangeFragment(Fragment.Advice);
     }
 
     private void Start()
     {
-        RequestManager.Instance.RequestAdvice((status, advice) =>
-        {
-            Debug.Log("MainActivity: " + status + " " + advice.AdviceText);
-        });
+
     }
 
     private void RandomButtonClick()
     {
-
+        ChangeFragment(Fragment.Advice);
     }
 
     private void FavoritesAdvicesClick()
     {
-        
+        ChangeFragment(Fragment.Favourites);
+    }
+
+
+
+    private void ChangeFragment(Fragment type)
+    {
+        if (currentFragmentType == type)
+            return;
+
+        if (currentFragment != null)
+            currentFragment.Hide();
+
+        if (type == Fragment.Advice)
+            currentFragment = AdviceFragment;
+
+        if (type == Fragment.Favourites)
+            currentFragment = FavouritesFragment;
+
+        currentFragment.Show();
+        currentFragmentType = type;
     }
 }
