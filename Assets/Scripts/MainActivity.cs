@@ -12,6 +12,7 @@ public class MainActivity : MonoBehaviour
     [SerializeField] Button favoritesAdvices;
     [SerializeField] AdviceFragment AdviceFragment;
     [SerializeField] FavouritesFragment FavouritesFragment;
+    [SerializeField] Text titleText;
 
     private BaseFragment currentFragment;
     private Fragment currentFragmentType;
@@ -63,5 +64,6 @@ public class MainActivity : MonoBehaviour
 
         currentFragment.Show();
         currentFragmentType = type;
+        titleText.text = currentFragmentType == Fragment.Advice ? "Random advice" : "Favourite advices";
     }
 }

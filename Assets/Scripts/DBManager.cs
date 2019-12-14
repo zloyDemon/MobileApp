@@ -42,7 +42,7 @@ class DBManager
         string text = advice.AdviceText.Replace("'", "''");
         string query = $"INSERT INTO {AdviceTableName} (id,advice) VALUES ('{advice.AdviceId}','{text}')";
         CurrentAdvices.Add(advice);
-        ExecuteQuery(query);
+        ExecuteQuery(query); 
         AddedToDB(advice);
     }
 

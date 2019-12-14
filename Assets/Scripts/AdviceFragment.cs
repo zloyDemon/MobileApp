@@ -16,7 +16,13 @@ public class AdviceFragment : BaseFragment
     {
         addAdviceBtn.onClick.AddListener(AddAdviceToFavourite);
         nextAdviceBtn.onClick.AddListener(NextAdvice);
+        DBManager.Instance.DatabaseUpdated += DatabaseUpdated;
         GetNewAdvice();
+    }
+
+    private void OnDestroy()
+    {
+        DBManager.Instance.DatabaseUpdated -= DatabaseUpdated;
     }
 
     private void AddAdviceToFavourite()
@@ -50,10 +56,12 @@ public class AdviceFragment : BaseFragment
         if (status == RequestManager.ResponseStatus.Success)
         {
             currentAdvice = advice;
-            adviceText.text = advice.AdviceText;
+            adviceText.text = currentAdvice.AdviceText;
+            addAdviceBtn.gameObject.SetActive(!CheckExistsAdviceInDb(currentAdvice));
         }
         else
         {
+            adviceText.color = Color.red;
             adviceText.text = "Error";
         }
     }
@@ -70,5 +78,10 @@ public class AdviceFragment : BaseFragment
         adviceText.gameObject.SetActive(!isVisible);
         addAdviceBtn.gameObject.SetActive(!isVisible);
         nextAdviceBtn.gameObject.SetActive(!isVisible);
+    }
+
+    private void DatabaseUpdated()
+    {
+        addAdviceBtn.gameObject.SetActive(!CheckExistsAdviceInDb(currentAdvice));
     }
 }
